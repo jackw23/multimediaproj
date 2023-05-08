@@ -146,7 +146,7 @@
      */
     imageproc.operation = function(inputImage, outputImage) {
         // Apply the basic processing operations
-        console.log("asoidfhaosdfasdf");
+        // console.log("asoidfhaosdfasdf");
 
         var processedImage = inputImage;
         if (currentBasicOp != "no-op") {

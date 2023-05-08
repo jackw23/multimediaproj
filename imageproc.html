@@ -99,7 +99,7 @@
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#no-op"><i>Do Nothing</i></a></li>
-                            <li><a class="dropdown-item" href="#dither">Error Diffusion Dithering</a></li>
+                            <li><a class="dropdown-item" href="#dither">Dithering</a></li>
                         </ul>
                     </li>
 
@@ -340,6 +340,7 @@
                                 <div class="col-3">
                                     <label for="dither-matrix-type">Matrix type:</label>
                                     <select class="custom-select" id="dither-matrix-type">
+                                        <option value="error">Error Diffusion Dithering</option>
                                         <option value="bayer2">Bayer's 2&times;2 Matrix</option>
                                         <option value="bayer4">Bayer's 4&times;4 Matrix</option>
                                         <option value="line">Diagonal Lines</option>
