@@ -123,26 +123,24 @@
      */
     imageproc.posterization = function(inputData, outputData,
                                        redBits, greenBits, blueBits) {
-        console.log("Applying posterizationnnnnnnn...");
+        console.log("Applying posterization!!");
 
-        /**
-         * TODO: You need to create the posterization operation here
-         */
+        var redLevels = Math.pow(2, redBits);
+        var greenLevels = Math.pow(2, greenBits);
+        var blueLevels = Math.pow(2, blueBits);
 
-        // Create the red, green and blue masks
-        // A function makeBitMask() is already given
+        var redMask = Math.floor(256 / redLevels) - 1;
+        var greenMask = Math.floor(256 / greenLevels) - 1; 
+        var blueMask = Math.floor(256 / blueLevels) - 1;
 
         for (var i = 0; i < inputData.data.length; i += 4) {
-            // Apply the bitmasks onto the RGB channels
-
-            var rBitmask = makeBitMask(redBits);
-            var gBitmask = makeBitMask(greenBits);
-            var bBitmask = makeBitMask(blueBits);
-
-
-            outputData.data[i]     = inputData.data[i] & rBitmask;
-            outputData.data[i + 1] = inputData.data[i + 1] & gBitmask;
-            outputData.data[i + 2] = inputData.data[i + 2] & bBitmask;
+            var rQuant = Math.floor(inputData.data[i] / (256 / redLevels)) * redMask;
+            var gQuant = Math.floor(inputData.data[i + 1] / (256 / greenLevels)) * greenMask;
+            var bQuant = Math.floor(inputData.data[i + 2] / (256 / blueLevels)) * blueMask;
+            
+            outputData.data[i]     = rQuant;
+            outputData.data[i + 1] = gQuant;
+            outputData.data[i + 2] = bQuant;
         }
     }
 
