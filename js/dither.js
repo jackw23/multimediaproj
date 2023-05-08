@@ -51,26 +51,28 @@
         break;
       case "poster":
         console.log("to posterization");
-        // var threshold = 128;
         var result;
-
-        var levels = 8; 
-        var step = 255 / (levels - 1);
+        var step = 255/7;
 
         var errorBuffer = new Array(inputData.width);
         for (var x = 0; x < inputData.width; x++) {
           errorBuffer[x] = new Array(inputData.height).fill(0);
         }
 
-          // console.log("threshold: " + threshold);
           for (var y = 0; y < inputData.height; y++) {
               for (var x = 0; x < inputData.width; x++) {
                   var pixel = imageproc.getPixel(inputData, x, y);
                   var grayscale = (pixel.r + pixel.g + pixel.b) / 3;
                   grayscale = grayscale - errorBuffer[x][y];
 
-                  var level = Math.round(grayscale / step) * step;
-                  var result = level > 255 ? 255 : level < 0 ? 0 : level;
+                  var level = Math.round(grayscale/step) * step;
+                  if (level > 255) {
+                    result = 255;
+                  } else if (level < 0) {
+                    result = 0;
+                  } else {
+                    result = level;
+                  }
 
                   var i = (x + y * outputData.width) * (4);
                   outputData.data[i] = result;
