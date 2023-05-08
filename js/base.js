@@ -138,6 +138,7 @@
             var gQuant = Math.floor(inputData.data[i + 1] / (256 / greenLevels)) * greenMask;
             var bQuant = Math.floor(inputData.data[i + 2] / (256 / blueLevels)) * blueMask;
             
+            
             outputData.data[i]     = rQuant;
             outputData.data[i + 1] = gQuant;
             outputData.data[i + 2] = bQuant;
