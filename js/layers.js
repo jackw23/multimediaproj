@@ -89,8 +89,9 @@
             case "dither":
                 if ($("#dither-input").val() == "processed")
                     inputImage = processedImage;
+                var levels = parseInt($("#kuwahara-filter-size1").val());
                 imageproc.dither(inputImage, outputImage,
-                                 $("#dither-matrix-type").val());
+                                 $("#dither-matrix-type").val(), levels);
                 break;
         }
     }
@@ -175,7 +176,7 @@
                  * TODO: You need to show the base layer (baseLayer) for
                  * the white pixels (transparent)
                  */
-                    console.log("asoidfhaosdfasdf");
+                    // console.log("asoidfhaosdfasdf");
                 for (var i = 0; i < shadeLayer.data.length; i+=4){
                     if (shadeLayer.data[i] == 255 && shadeLayer.data[i+1] == 255 && shadeLayer.data[i+2] == 255){
                         shadeLayer.data[i] = baseLayer.data[i];

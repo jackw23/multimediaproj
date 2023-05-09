@@ -4,7 +4,8 @@
   /*
    * Apply ordered dithering to the input data
    */
-  imageproc.dither = function(inputData, outputData, matrixType) {
+  imageproc.dither = function(inputData, outputData, matrixType, levels) {
+    console.log(levels);
 
     switch(matrixType) {
       case "error":
@@ -52,7 +53,8 @@
       case "poster":
         console.log("to posterization");
         var result;
-        var step = 255/7;
+        console.log(levels);
+        var step = 255/ (levels - 1);
 
         var errorBuffer = new Array(inputData.width);
         for (var x = 0; x < inputData.width; x++) {
