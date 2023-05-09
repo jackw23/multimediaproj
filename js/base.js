@@ -134,14 +134,13 @@
         var blueMask = Math.floor(256/blueLevels) - 1;
 
         for (var i = 0; i < inputData.data.length; i += 4) {
-            var rQuant = Math.floor(inputData.data[i] / (256/redLevels))*redMask;
-            var gQuant = Math.floor(inputData.data[i + 1] / (256/greenLevels))*greenMask;
-            var bQuant = Math.floor(inputData.data[i + 2] / (256/blueLevels))*blueMask;
+            var rVal = Math.floor(inputData.data[i] / (256/redLevels))*redMask;
+            var gVal = Math.floor(inputData.data[i + 1] / (256/greenLevels))*greenMask;
+            var bVal = Math.floor(inputData.data[i + 2] / (256/blueLevels))*blueMask;
             
-
-            outputData.data[i] = rQuant;
-            outputData.data[i + 1] = gQuant;
-            outputData.data[i + 2] = bQuant;
+            outputData.data[i] = rVal;
+            outputData.data[i + 1] = gVal;
+            outputData.data[i + 2] = bVal;
         }
     }
 
