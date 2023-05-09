@@ -85,27 +85,8 @@
                     errorBufferG[x+1][y+1] +=errorG*(1.0/16);
                     errorBufferB[x+1][y+1] +=errorB*(1.0/16);
                 }
-                /*
-                var error = grayscale - result;
-                
-                if(x < inputData.width - 1){
-                    errorBuffer[x + 1][y] -= error * (7.0/16);
-                }
-
-                if(x > 0 && y < inputData.height - 1){
-                    errorBuffer[x-1][y+1] -= error * (3.0/16);
-                }
-                
-                if(y < inputData.height - 1){
-                    errorBuffer[x][y+1] -= error * (5.0/16);
-                }
-
-                if(x < inputData.width - 1 && y < inputData.height - 1){
-                    errorBuffer[x+1][y+1] -= error * (1.0/16);
-                }
-                */
               }
-          }
+            }
         break;
 
       case "poster":
