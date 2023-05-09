@@ -9,15 +9,21 @@
 
     switch(matrixType) {
       case "error":
-        console.log("error diffusioncan");
-        // var threshold = 128;
+        console.log("error diffusion!")
         var resultR;
         var resultG;
         var resultB;
         var errorR = 0;
         var errorG = 0;
         var errorB = 0;
-        var step = 255/ (levels - 1);
+
+        var redLevels = Math.pow(2, 2);
+        var greenLevels = Math.pow(2, 2);
+        var blueLevels = Math.pow(2, 2);
+      
+        var redMask = Math.floor(256 / redLevels) - 1;
+        var greenMask = Math.floor(256 / greenLevels) - 1;
+        var blueMask = Math.floor(256 / blueLevels) - 1;
 
         var errorBuffer = new Array(inputData.width);
         for (var x = 0; x < inputData.width; x++) {
@@ -27,8 +33,8 @@
               for (var x = 0; x < inputData.width; x++) {
                   var pixel = imageproc.getPixel(inputData, x, y);
 
-                  var grayscaleR = pixel.r - errorBuffer[x][y][0];
-                  var levelR = Math.round(grayscaleR/step)*step;
+                  var levelR = Math.floor(pixel.r / (256 / redLevels)) * redMask;
+                  levelR = levelR - errorBuffer[x][y][0];
                   if (levelR > 255) {
                     resultR = 255;
                   } else if (levelR < 0) {
@@ -36,10 +42,10 @@
                   } else {
                     resultR = levelR;
                   }
-                  errorR = grayscaleR - resultR;
+                  errorR = pixel.r - resultR;
 
-                  var grayscaleG = pixel.g - errorBuffer[x][y][1];
-                  var levelG = Math.round(grayscaleG/step)*step;
+                  var levelG = Math.floor(pixel.g / (256 / greenLevels)) * greenMask;
+                  levelG = levelG - errorBuffer[x][y][1];
                   if (levelG > 255) {
                     resultG = 255;
                   } else if (levelG < 0) {
@@ -47,10 +53,10 @@
                   } else {
                     resultG = levelG;
                   }
-                  errorG = grayscaleG - resultG;
+                  errorG = pixel.g - resultG;
 
-                  var grayscaleB = pixel.b - errorBuffer[x][y][2];
-                  var levelB = Math.round(grayscaleB/step)*step;
+                  var levelB = Math.floor(pixel.b / (256 / blueLevels)) * blueMask;
+                  levelB = levelB - errorBuffer[x][y][2];
                   if (levelB > 255) {
                     resultB = 255;
                   } else if (levelB < 0) {
@@ -58,35 +64,36 @@
                   } else {
                     resultB = levelB;
                   }
-                  errorB = grayscaleB - resultB;
+                  errorB = pixel.b - resultB;
 
                   var i = (x + y * outputData.width) * (4);
                   outputData.data[i] = resultR;
                   outputData.data[i + 1] = resultG;
                   outputData.data[i + 2] = resultB;
+                  outputData.data[i + 3] = 255;
                   
                   if(x < inputData.width - 1){
-                      errorBuffer[x+1][y][0] += errorR * (7.0/16);
-                      errorBuffer[x+1][y][1] += errorG * (7.0/16);
-                      errorBuffer[x+1][y][2] += errorB * (7.0/16);
+                      errorBuffer[x+1][y][0] -= errorR * (7.0/16);
+                      errorBuffer[x+1][y][1] -= errorG * (7.0/16);
+                      errorBuffer[x+1][y][2] -= errorB * (7.0/16);
                   }
 
                   if(x > 0 && y < inputData.height - 1){
-                      errorBuffer[x-1][y+1][0] += errorR * (3.0/16);
-                      errorBuffer[x-1][y+1][1] += errorG * (3.0/16);
-                      errorBuffer[x-1][y+1][2] += errorB * (3.0/16);
+                      errorBuffer[x-1][y+1][0] -= errorR * (3.0/16);
+                      errorBuffer[x-1][y+1][1] -= errorG * (3.0/16);
+                      errorBuffer[x-1][y+1][2] -= errorB * (3.0/16);
                   }
                   
                   if(y < inputData.height - 1){
-                      errorBuffer[x][y+1][0] += errorR * (5.0/16);
-                      errorBuffer[x][y+1][1] += errorG * (5.0/16);
-                      errorBuffer[x][y+1][2] += errorB * (5.0/16);
+                      errorBuffer[x][y+1][0] -= errorR * (5.0/16);
+                      errorBuffer[x][y+1][1] -= errorG * (5.0/16);
+                      errorBuffer[x][y+1][2] -= errorB * (5.0/16);
                   }
 
                   if(x < inputData.width - 1 && y < inputData.height - 1){
-                      errorBuffer[x+1][y+1][0] += errorR * (1.0/16);
-                      errorBuffer[x+1][y+1][1] += errorG * (1.0/16);
-                      errorBuffer[x+1][y+1][2] += errorB * (1.0/16);
+                      errorBuffer[x+1][y+1][0] -= errorR * (1.0/16);
+                      errorBuffer[x+1][y+1][1] -= errorG * (1.0/16);
+                      errorBuffer[x+1][y+1][2] -= errorB * (1.0/16);
                   }
               }
           }
@@ -125,7 +132,7 @@
                   var error = grayscale - result;
                   
                   if(x < inputData.width - 1){
-                      errorBuffer[x + 1][y] -= error * (7.0/16);
+                      errorBuffer[x+1][y] -= error * (7.0/16);
                   }
 
                   if(x > 0 && y < inputData.height - 1){
